@@ -41,13 +41,14 @@ class WeatherFacade
         feels_like: get_weather[:current][:feelslike_f],
         humidity: get_weather[:current][:humidity],
         uvi: get_weather[:current][:uv],
+        visibility: get_weather[:current][:vis_miles],
         conditions: get_weather[:current][:condition][:text],
         icon: get_weather[:current][:condition][:icon]
       }
     end
 
     def daily_weather
-      get_weather[:forecast][:forecastday][1..4].map do |day|
+      get_weather[:forecast][:forecastday][1..5].map do |day|
       {
         date: day[:date],
         sunrise: day[:astro][:sunrise],
