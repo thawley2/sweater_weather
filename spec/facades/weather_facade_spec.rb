@@ -15,11 +15,12 @@ RSpec.describe WeatherFacade do
         expect(denver_weather_object.current_weather).to have_key :feels_like
         expect(denver_weather_object.current_weather).to have_key :humidity
         expect(denver_weather_object.current_weather).to have_key :uvi
+        expect(denver_weather_object.current_weather).to have_key :visibility
         expect(denver_weather_object.current_weather).to have_key :conditions
         expect(denver_weather_object.current_weather).to have_key :icon
 
         expect(denver_weather_object.daily_weather).to be_an Array
-        expect(denver_weather_object.daily_weather.count).to eq(4)
+        expect(denver_weather_object.daily_weather.count).to eq(5)
         expect(denver_weather_object.daily_weather.first).to be_a Hash
         expect(denver_weather_object.daily_weather.first).to have_key :date
         expect(denver_weather_object.daily_weather.first).to have_key :sunrise
