@@ -23,23 +23,33 @@ RSpec.describe 'Weather API' do
       expect(denver_weather[:data][:attributes]).to have_key :daily_weather
       expect(denver_weather[:data][:attributes]).to have_key :hourly_weather
 
-      expect(denver_weather[:data][:attributes][:current_weather]).to be_a Hash
-      expect(denver_weather[:data][:attributes][:current_weather]).to have_key :last_updated
-      expect(denver_weather[:data][:attributes][:current_weather][:last_updated]).to be_a String
-      expect(denver_weather[:data][:attributes][:current_weather]).to have_key :temperature
-      expect(denver_weather[:data][:attributes][:current_weather][:temperature]).to be_a Float
-      expect(denver_weather[:data][:attributes][:current_weather]).to have_key :feels_like
-      expect(denver_weather[:data][:attributes][:current_weather][:feels_like]).to be_a Float
-      expect(denver_weather[:data][:attributes][:current_weather]).to have_key :humidity
-      expect(denver_weather[:data][:attributes][:current_weather][:humidity]).to be_a Integer
-      expect(denver_weather[:data][:attributes][:current_weather]).to have_key :uvi
-      expect(denver_weather[:data][:attributes][:current_weather][:uvi]).to be_a Float
-      expect(denver_weather[:data][:attributes][:current_weather]).to have_key :visibility
-      expect(denver_weather[:data][:attributes][:current_weather][:visibility]).to be_a Float
-      expect(denver_weather[:data][:attributes][:current_weather]).to have_key :conditions
-      expect(denver_weather[:data][:attributes][:current_weather][:conditions]).to be_a String
-      expect(denver_weather[:data][:attributes][:current_weather]).to have_key :icon
-      expect(denver_weather[:data][:attributes][:current_weather][:icon]).to be_a String
+      expect(denver_weather[:data][:attributes]).to_not have_key :name
+      expect(denver_weather[:data][:attributes]).to_not have_key :region
+      expect(denver_weather[:data][:attributes]).to_not have_key :country
+      expect(denver_weather[:data][:attributes]).to_not have_key :lat
+      expect(denver_weather[:data][:attributes]).to_not have_key :lon
+      expect(denver_weather[:data][:attributes]).to_not have_key :tz_id
+      expect(denver_weather[:data][:attributes]).to_not have_key :localtime_epoch
+      expect(denver_weather[:data][:attributes]).to_not have_key :localtime
+
+      denver_current = denver_weather[:data][:attributes][:current_weather]
+      expect(denver_current).to be_a Hash
+      expect(denver_current).to have_key :last_updated
+      expect(denver_current[:last_updated]).to be_a String
+      expect(denver_current).to have_key :temperature
+      expect(denver_current[:temperature]).to be_a Float
+      expect(denver_current).to have_key :feels_like
+      expect(denver_current[:feels_like]).to be_a Float
+      expect(denver_current).to have_key :humidity
+      expect(denver_current[:humidity]).to be_a Integer
+      expect(denver_current).to have_key :uvi
+      expect(denver_current[:uvi]).to be_a Float
+      expect(denver_current).to have_key :visibility
+      expect(denver_current[:visibility]).to be_a Float
+      expect(denver_current).to have_key :conditions
+      expect(denver_current[:conditions]).to be_a String
+      expect(denver_current).to have_key :icon
+      expect(denver_current[:icon]).to be_a String
 
       expect(denver_weather[:data][:attributes][:daily_weather]).to be_an Array
       expect(denver_weather[:data][:attributes][:daily_weather].count).to eq(5)
