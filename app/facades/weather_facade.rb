@@ -1,8 +1,8 @@
 class WeatherFacade
   def initialize(location)
     @location = location
-    @lat = get_location[:latLng][:lat]
-    @lon = get_location[:latLng][:lng]
+    @lat = get_location[:lat]
+    @lon = get_location[:lng]
   end
 
   def weather
@@ -19,7 +19,7 @@ class WeatherFacade
     end
 
     def get_location
-      @_get_location ||= location_service.get_location(@location)[:results][0][:locations][0]
+      @_get_location ||= location_service.get_location(@location)[:results][0][:locations][0][:latLng]
     end
 
     def get_weather
