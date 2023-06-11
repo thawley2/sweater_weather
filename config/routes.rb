@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   # root "articles#index"
   namespace :api do
     namespace :v1 do
-      get '/forecast', to: 'weathers#index'
+      get '/forecast', to: 'forecast#index'
     end
   end
 end
