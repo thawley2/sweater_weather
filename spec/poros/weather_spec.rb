@@ -9,6 +9,7 @@ RSpec.describe Weather do
           feels_like: 50.0,
           humidity: 50.0,
           uvi: 50.0,
+          visibility: 50.0,
           conditions: 'cloudy',
           icon: 'cloudy.png'
         },
