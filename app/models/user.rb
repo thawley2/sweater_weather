@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   before_create :set_api_key
-  validates :email, presence: true, uniqueness: true
+  validates :email, presence: true, uniqueness: { case_sensitive: false }
 
   has_secure_password
 
