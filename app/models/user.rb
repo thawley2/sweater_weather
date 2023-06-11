@@ -4,7 +4,8 @@ class User < ApplicationRecord
 
   has_secure_password
 
-  def set_api_key
-    self.api_key = SecureRandom.hex(13)
-  end
+  private
+    def set_api_key
+      self.api_key = SecureRandom.hex(13)
+    end
 end
