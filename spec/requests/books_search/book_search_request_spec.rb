@@ -36,7 +36,7 @@ RSpec.describe 'Book Search API' do
       expect(book_forecast[:data][:attributes][:books].first).to be_a Hash
       expect(book_forecast[:data][:attributes][:books].first).to have_key :isbn
       expect(book_forecast[:data][:attributes][:books].first[:isbn]).to be_an Array
-      expect(book_forecast[:data][:attributes][:books].first[:isbn].first).to be_a string
+      expect(book_forecast[:data][:attributes][:books].first[:isbn].first).to be_a String
       expect(book_forecast[:data][:attributes][:books].first).to have_key :title
       expect(book_forecast[:data][:attributes][:books].first[:title]).to be_a String
       expect(book_forecast[:data][:attributes][:books].first).to have_key :publisher
