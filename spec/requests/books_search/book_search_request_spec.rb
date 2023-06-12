@@ -44,4 +44,57 @@ RSpec.describe 'Book Search API' do
       expect(book_forecast[:data][:attributes][:books].first[:publisher].first).to be_a String
     end
   end
+
+  describe 'Sad Path' do
+    it 'returns an error if the location is not provided' do
+      headers = {"CONTENT_TYPE" => "application/json"}
+      get "/api/v1/book-search?location=&quantity=5", headers: headers
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(400)
+
+      error = JSON.parse(response.body, symbolize_names: true)
+
+      expect(error).to be_a Hash
+      expect(error).to have_key :errors
+      expect(error[:errors]).to be_a Array
+      expect(error[:errors][0]).to be_a Hash
+      expect(error[:errors][0]).to have_key :detail
+      expect(error[:errors][0][:detail]).to eq("Invalid location or quantity")
+    end
+
+    it 'returns an error if the quantity is not provided' do
+      headers = {"CONTENT_TYPE" => "application/json"}
+      get "/api/v1/book-search?location=denver,co&quantity=", headers: headers
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(400)
+
+      error = JSON.parse(response.body, symbolize_names: true)
+
+      expect(error).to be_a Hash
+      expect(error).to have_key :errors
+      expect(error[:errors]).to be_a Array
+      expect(error[:errors][0]).to be_a Hash
+      expect(error[:errors][0]).to have_key :detail
+      expect(error[:errors][0][:detail]).to eq("Invalid location or quantity")
+    end
+
+    it 'returns an error if the quantity is less than 1' do
+      headers = {"CONTENT_TYPE" => "application/json"}
+      get "/api/v1/book-search?location=denver,co&quantity=-1", headers: headers
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(400)
+
+      error = JSON.parse(response.body, symbolize_names: true)
+
+      expect(error).to be_a Hash
+      expect(error).to have_key :errors
+      expect(error[:errors]).to be_a Array
+      expect(error[:errors][0]).to be_a Hash
+      expect(error[:errors][0]).to have_key :detail
+      expect(error[:errors][0][:detail]).to eq("Invalid location or quantity")
+    end
+  end
 end
