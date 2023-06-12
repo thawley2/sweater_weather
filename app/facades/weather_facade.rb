@@ -1,6 +1,7 @@
 class WeatherFacade
-  def initialize(location)
+  def initialize(location, book_quantity = nil)
     @location = location
+    @book_quantity = book_quantity
     @lat = get_location[:lat]
     @lon = get_location[:lng]
   end
@@ -9,7 +10,15 @@ class WeatherFacade
     @_weather ||= Weather.new(format_weather_data)
   end
 
+  def books_by_location
+    @_books_by_location ||= BooksByLocation.new(format_forecast, format_books_data)
+  end
+
   private
+    def books_service
+      @_books_service ||= BooksService.new
+    end
+
     def location_service
       @_location_service ||= LocationService.new
     end
@@ -24,6 +33,10 @@ class WeatherFacade
 
     def weather_data
       @_weather_data ||= weather_service.get_weather(@lat, @lon)
+    end
+
+    def books_data
+      @_books_data ||= books_service.get_books(@location)
     end
 
     def format_weather_data
@@ -71,5 +84,28 @@ class WeatherFacade
         icon: hour[:condition][:icon]
       }
       end
+    end
+
+    def format_books_data
+      books = {
+        total_books: books_data[:numFound],
+        books: books_data[:docs][0..@book_quantity].map do |book|
+          {
+            isbn: book[:isbn],
+            title: book[:title],
+            publisher: book[:publisher]
+          }
+        end
+      }
+    end
+
+    def format_forecast 
+      {
+        destination: @location,
+        forecast: {
+          summary: weather_data[:current][:weather][0][:description],
+          temperature: weather_data[:current][:temp]
+        }
+      }
     end
 end
