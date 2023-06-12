@@ -89,7 +89,7 @@ class WeatherFacade
     def format_books_data
       books = {
         total_books: books_data[:numFound],
-        books: books_data[:docs][0..@book_quantity].map do |book|
+        books: books_data[:docs][0..@book_quantity - 1].map do |book|
           {
             isbn: book[:isbn],
             title: book[:title],
@@ -103,7 +103,7 @@ class WeatherFacade
       {
         destination: @location,
         forecast: {
-          summary: weather_data[:current][:weather][0][:description],
+          summary: weather_data[:current][:condition][:text],
           temperature: weather_data[:current][:temp]
         }
       }
