@@ -1,4 +1,4 @@
-class RoadTripFacade
+class RoadTripFacade < WeatherFacade
   def initialize(locations)
     @origin = locations[:origin]
     @destination = locations[:destination]
@@ -13,14 +13,6 @@ class RoadTripFacade
   end
 
   private
-    def location_service
-      @_location_service ||= LocationService.new
-    end
-
-    def weather_service
-      @_weather_service ||= WeatherService.new
-    end
-
     def directions_data
       @_directions_data ||= location_service.get_directions(@origin, @destination)[:route]
     end
