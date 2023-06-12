@@ -39,5 +39,27 @@ RSpec.describe WeatherFacade do
         expect(denver_weather_object.hourly_weather.first).to have_key :icon
       end
     end
+
+    it 'returns a book-search object for a given location, with some weather' do
+      books_by_location = WeatherFacade.new('denver,co', 5).books_by_location
+
+      expect(books_by_location).to be_a BooksByLocation
+      expect(books_by_location.destination).to eq('denver,co')
+      expect(books_by_location.forecast).to be_a Hash
+      expect(books_by_location.forecast).to have_key :summary
+      expect(books_by_location.forecast).to have_key :temperature
+      expect(books_by_location.total_books_found).to be_an Integer
+      expect(books_by_location.books).to be_an Array
+      expect(books_by_location.books.count).to eq(5)
+      expect(books_by_location.books.first).to be_a Hash
+      expect(books_by_location.books.first).to have_key :isbn
+      expect(books_by_location.books.first[:isbn]).to be_an Array
+      expect(books_by_location.books.first[:isbn].first).to be_a String
+      expect(books_by_location.books.first).to have_key :title
+      expect(books_by_location.books.first[:title]).to be_a String
+      expect(books_by_location.books.first).to have_key :publisher
+      expect(books_by_location.books.first[:publisher]).to be_an Array
+      expect(books_by_location.books.first[:publisher].first).to be_a String
+    end
   end
 end
