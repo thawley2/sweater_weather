@@ -50,4 +50,44 @@ RSpec.describe 'Road Trip API' do
       end
     end
   end
+
+  describe 'Sad Path' do
+    it 'returns an object with an impossible travel time if the trip is impossible' do
+      VCR.use_cassette('trip_impossible', allow_playback_repeats: true) do
+        user = create(:user)
+          
+        trip_params = {
+          origin: 'ponca city, ok',
+          destination: 'london, uk',
+          api_key: user.api_key
+        }
+        
+        headers = {"CONTENT_TYPE" => "application/json"}
+        post "/api/v1/road_trip", headers: headers, params: JSON.generate(trip_params)
+
+        expect(response).to be_successful
+        expect(response.status).to eq(200)
+
+        bad_trip = JSON.parse(response.body, symbolize_names: true)
+
+        expect(bad_trip).to be_a Hash
+        expect(bad_trip).to have_key :data
+        expect(bad_trip[:data]).to be_a Hash
+        expect(bad_trip[:data]).to have_key :id
+        expect(bad_trip[:data][:id]).to eq(nil)
+        expect(bad_trip[:data]).to have_key :type
+        expect(bad_trip[:data][:type]).to eq('road_trip')
+        expect(bad_trip[:data]).to have_key :attributes
+        expect(bad_trip[:data][:attributes]).to be_a Hash
+        expect(bad_trip[:data][:attributes]).to have_key :start_city
+        expect(bad_trip[:data][:attributes][:start_city]).to eq(trip_params[:origin])
+        expect(bad_trip[:data][:attributes]).to have_key :end_city
+        expect(bad_trip[:data][:attributes][:end_city]).to eq(trip_params[:destination])
+        expect(bad_trip[:data][:attributes]).to have_key :travel_time
+        expect(bad_trip[:data][:attributes][:travel_time]).to eq('impossible')
+        expect(bad_trip[:data][:attributes]).to have_key :weather_at_eta
+        expect(bad_trip[:data][:attributes][:weather_at_eta]).to eq({})
+      end
+    end
+  end
 end
