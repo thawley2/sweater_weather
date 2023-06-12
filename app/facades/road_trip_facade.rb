@@ -1,7 +1,7 @@
 class RoadTripFacade
-  def initialize(origin, destination)
-    @origin = origin
-    @destination = destination
+  def initialize(locations)
+    @origin = locations[:origin]
+    @destination = locations[:destination]
     @origin_lat = directions_data[:locations][0][:latLng][:lat]
     @origin_lon = directions_data[:locations][0][:latLng][:lng]
     @dest_lat = directions_data[:locations][1][:latLng][:lat]

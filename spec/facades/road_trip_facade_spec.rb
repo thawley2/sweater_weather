@@ -6,8 +6,11 @@ RSpec.describe RoadTripFacade do
       VCR.use_cassette('denver_roadtrip_weather', allow_playback_repeats: true) do
         frozen_time = Time.new(2023, 6, 12, 12, 0, 0, '+00:00')
         Timecop.freeze(frozen_time) do
-
-          trip = RoadTripFacade.new('ponca city, ok', 'denver, co').road_trip
+          trip_data = {
+            origin: 'ponca city, ok',
+            destination: 'denver, co'
+          }
+          trip = RoadTripFacade.new(trip_data).road_trip
           
           expect(trip).to be_a RoadTrip
           expect(trip.start_city).to eq('ponca city, ok')
