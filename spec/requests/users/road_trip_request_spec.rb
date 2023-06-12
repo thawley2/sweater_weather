@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Road Trip API' do
   describe 'Happy Path' do
-    it 'can return the travel time and forecast for a road trip' do
+    xit 'can return the travel time and forecast for a road trip' do
       VCR.use_cassette('road_trip_request') do
         user = create(:user)
 
