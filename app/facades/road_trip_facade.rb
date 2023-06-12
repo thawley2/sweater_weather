@@ -2,19 +2,25 @@ class RoadTripFacade < WeatherFacade
   def initialize(locations)
     @origin = locations[:origin]
     @destination = locations[:destination]
-    @origin_lat = directions_data[:locations][0][:latLng][:lat]
-    @origin_lon = directions_data[:locations][0][:latLng][:lng]
-    @dest_lat = directions_data[:locations][1][:latLng][:lat]
-    @dest_lon = directions_data[:locations][1][:latLng][:lng]
+    if directions_data.key?(:locations)
+      @origin_lat = directions_data[:locations][0][:latLng][:lat]
+      @origin_lon = directions_data[:locations][0][:latLng][:lng]
+      @dest_lat = directions_data[:locations][1][:latLng][:lat]
+      @dest_lon = directions_data[:locations][1][:latLng][:lng]
+    end
   end
 
   def road_trip
-    RoadTrip.new(road_trip_data)
+    if directions_data.key?(:routeError)
+      RoadTrip.new(error_trip)
+    else
+      RoadTrip.new(road_trip_data)
+    end
   end
 
   private
     def directions_data
-      @_directions_data ||= location_service.get_directions(@origin, @destination)[:route]
+      @_directions_data ||= location_service&.get_directions(@origin, @destination)[:route]
     end
 
     def destination_weather_data
@@ -49,6 +55,15 @@ class RoadTripFacade < WeatherFacade
           temperature: weather_at_destination_hour[:temp_f],
           conditions: weather_at_destination_hour[:condition][:text]
         }
+      }
+    end
+
+    def error_trip
+      {
+        start_city: @origin,
+        end_city: @destination,
+        travel_time: "impossible",
+        weather_at_eta: {}
       }
     end
 end
