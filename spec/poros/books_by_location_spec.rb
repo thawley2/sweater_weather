@@ -11,7 +11,7 @@ RSpec.describe BooksByLocation do
     }
 
     books_data = {
-      total_books_found: 700,
+      total_books: 700,
       books: [
         {
           isbn: ['123456', '465789'],
