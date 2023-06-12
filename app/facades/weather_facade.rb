@@ -1,7 +1,7 @@
 class WeatherFacade
   def initialize(location, book_quantity = nil)
     @location = location
-    @book_quantity = book_quantity
+    @book_quantity = book_quantity.to_i
     @lat = get_location[:lat]
     @lon = get_location[:lng]
   end
@@ -104,7 +104,7 @@ class WeatherFacade
         destination: @location,
         forecast: {
           summary: weather_data[:current][:condition][:text],
-          temperature: weather_data[:current][:temp]
+          temperature: "#{weather_data[:current][:temp]} F"
         }
       }
     end
