@@ -104,7 +104,7 @@ class WeatherFacade
         destination: @location,
         forecast: {
           summary: weather_data[:current][:condition][:text],
-          temperature: "#{weather_data[:current][:temp]} F"
+          temperature: "#{weather_data[:current][:temp_f]} F"
         }
       }
     end
