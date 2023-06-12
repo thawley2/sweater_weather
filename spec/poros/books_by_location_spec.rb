@@ -6,7 +6,7 @@ RSpec.describe BooksByLocation do
       destination: 'denver, co',
       forecast: {
         summary: 'cloudy',
-        temperature: 50.0
+        temperature: "50.0 F"
       }
     }
 
@@ -34,7 +34,7 @@ RSpec.describe BooksByLocation do
     expect(books_with_weather.forecast).to have_key :summary
     expect(books_with_weather.forecast[:summary]).to eq('cloudy')
     expect(books_with_weather.forecast).to have_key :temperature
-    expect(books_with_weather.forecast[:temperature]).to eq(50.0)
+    expect(books_with_weather.forecast[:temperature]).to eq('50.0 F')
     expect(books_with_weather.total_books_found).to eq(700)
     expect(books_with_weather.books).to be_an Array
     expect(books_with_weather.books.count).to eq(2)
