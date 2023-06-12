@@ -87,7 +87,7 @@ class WeatherFacade
     end
 
     def format_books_data
-      books = {
+      {
         total_books: books_data[:numFound],
         books: books_data[:docs][0..@book_quantity - 1].map do |book|
           {
