@@ -40,7 +40,7 @@ RSpec.describe WeatherFacade do
       end
     end
 
-    it 'returns a book-search object for a given location, with some weather' do
+    it 'returns a book-search object for a given location, with some weather', :vcr do
       books_by_location = WeatherFacade.new('denver,co', 5).books_by_location
 
       expect(books_by_location).to be_a BooksByLocation
