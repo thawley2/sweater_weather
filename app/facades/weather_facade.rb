@@ -22,8 +22,8 @@ class WeatherFacade
       @_get_location ||= location_service.get_location(@location)[:results][0][:locations][0][:latLng]
     end
 
-    def get_weather
-      @_get_weather ||= weather_service.get_weather(@lat, @lon)
+    def weather_data
+      @_weather_data ||= weather_service.get_weather(@lat, @lon)
     end
 
     def format_weather_data
@@ -35,20 +35,21 @@ class WeatherFacade
     end
 
     def current_weather
+      weather ||= weather_data[:current]
       {
-        last_updated: get_weather[:current][:last_updated],
-        temperature: get_weather[:current][:temp_f],
-        feels_like: get_weather[:current][:feelslike_f],
-        humidity: get_weather[:current][:humidity],
-        uvi: get_weather[:current][:uv],
-        visibility: get_weather[:current][:vis_miles],
-        conditions: get_weather[:current][:condition][:text],
-        icon: get_weather[:current][:condition][:icon]
+        last_updated: weather[:last_updated],
+        temperature: weather[:temp_f],
+        feels_like: weather[:feelslike_f],
+        humidity: weather[:humidity],
+        uvi: weather[:uv],
+        visibility: weather[:vis_miles],
+        conditions: weather[:condition][:text],
+        icon: weather[:condition][:icon]
       }
     end
 
     def daily_weather
-      get_weather[:forecast][:forecastday][1..5].map do |day|
+      weather_data[:forecast][:forecastday][1..5].map do |day|
       {
         date: day[:date],
         sunrise: day[:astro][:sunrise],
@@ -62,9 +63,9 @@ class WeatherFacade
     end
 
     def hourly_weather
-      get_weather[:forecast][:forecastday][0][:hour].map do |hour|
+      weather_data[:forecast][:forecastday][0][:hour].map do |hour|
       {
-        time: hour[:time],
+        time: DateTime.parse(hour[:time]).strftime("%H:%M"),
         temperature: hour[:temp_f],
         conditions: hour[:condition][:text],
         icon: hour[:condition][:icon]

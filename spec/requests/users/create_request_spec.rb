@@ -58,6 +58,30 @@ RSpec.describe 'Users API' do
       expect(error[:errors][0][:detail]).to eq("Validation failed: Email has already been taken")
     end
 
+    it 'returns an error if email is already taken regardless of case, status 409' do
+      User.create!(email: "whatever@example.com", password: "password", api_key: "lfdkgj34t98sd34dfhj")
+      user_params = {
+        email: "Whatever@example.com",
+        password: "password",
+        password_confirmation: "password"
+      }
+
+      headers = {"CONTENT_TYPE" => "application/json"}
+      post "/api/v1/users", headers: headers, params: JSON.generate(user_params)
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(409)
+
+      error = JSON.parse(response.body, symbolize_names: true)
+
+      expect(error).to be_a Hash
+      expect(error).to have_key :errors
+      expect(error[:errors]).to be_a Array
+      expect(error[:errors][0]).to be_a Hash
+      expect(error[:errors][0]).to have_key :detail
+      expect(error[:errors][0][:detail]).to eq("Validation failed: Email has already been taken")
+    end
+
     it 'returns an error if the password and confirmation_password do not match status 400' do
       user_params = {
         email: "whatever@example.com",
