@@ -3,8 +3,6 @@ class RoadTripFacade < WeatherFacade
     @origin = locations[:origin]
     @destination = locations[:destination]
     if directions_data.key?(:locations)
-      @origin_lat = directions_data[:locations][0][:latLng][:lat]
-      @origin_lon = directions_data[:locations][0][:latLng][:lng]
       @dest_lat = directions_data[:locations][1][:latLng][:lat]
       @dest_lon = directions_data[:locations][1][:latLng][:lng]
     end
@@ -28,9 +26,7 @@ class RoadTripFacade < WeatherFacade
     end
 
     def time_at_destination
-      @_start_time ||= Time.now.in_time_zone(Timezone.lookup(@origin_lat, @origin_lon).name)
-      @_end_time_origin ||= @_start_time + directions_data[:time]
-      @_arrival_time ||= @_end_time_origin.in_time_zone(Timezone.lookup(@dest_lat, @dest_lon).name)
+      @_arrival_time ||= Time.now.in_time_zone(Timezone.lookup(@dest_lat, @dest_lon).name) + directions_data[:time]
     end
 
     def weather_at_destination_day
