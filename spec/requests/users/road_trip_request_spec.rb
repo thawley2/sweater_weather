@@ -89,5 +89,51 @@ RSpec.describe 'Road Trip API' do
         expect(bad_trip[:data][:attributes][:weather_at_eta]).to eq({})
       end
     end
+
+    it 'returns an error if the api key is not present' do
+      trip_params = {
+        origin: 'ponca city, ok',
+        destination: 'denver, co',
+        api_key: ''
+      }
+      
+      headers = {"CONTENT_TYPE" => "application/json"}
+      post "/api/v1/road_trip", headers: headers, params: JSON.generate(trip_params)
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(401)
+
+      error = JSON.parse(response.body, symbolize_names: true)
+
+      expect(error).to be_a Hash
+      expect(error).to have_key :errors
+      expect(error[:errors]).to be_a Array
+      expect(error[:errors][0]).to be_a Hash
+      expect(error[:errors][0]).to have_key :detail
+      expect(error[:errors][0][:detail]).to eq("API key is invalid")
+    end
+
+    it 'returns an error if the api key is not valid' do
+      trip_params = {
+        origin: 'ponca city, ok',
+        destination: 'denver, co',
+        api_key: '123abc'
+      }
+      
+      headers = {"CONTENT_TYPE" => "application/json"}
+      post "/api/v1/road_trip", headers: headers, params: JSON.generate(trip_params)
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(401)
+
+      error = JSON.parse(response.body, symbolize_names: true)
+
+      expect(error).to be_a Hash
+      expect(error).to have_key :errors
+      expect(error[:errors]).to be_a Array
+      expect(error[:errors][0]).to be_a Hash
+      expect(error[:errors][0]).to have_key :detail
+      expect(error[:errors][0][:detail]).to eq("API key is invalid")
+    end
   end
 end
