@@ -254,9 +254,9 @@ create_table "users", force: :cascade do |t|
 ```
 
 ## API's Used
-- MapQuest API
-- Google API
-- Weather API
+- MapQuest API (for directions)
+- Google API (for timezone calculation)
+- Weather API (for weather information)
 
 ## Author
 - Thomas Hawley [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white) ](https://github.com/thawley2) [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white) ](https://www.linkedin.com/in/thomas-hawley-901612123/)
